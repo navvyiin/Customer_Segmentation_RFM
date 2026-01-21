@@ -1,110 +1,112 @@
-**Corporate RFM Analytics Suite**
-Advanced Segmentation • Probabilistic CLTV • Causal Uplift • SHAP Explainability • Real-Time Scoring
+# 🤝 Contributing Guide
+
+**Customer Segmentation & Intelligence Platform**
+*Advanced RFM • Probabilistic CLTV • Causal Uplift • Explainable AI • Real-Time Scoring*
 
 ---
 
-# Welcome
+## Welcome 👋
 
-Thank you for your interest in contributing to the **Corporate RFM Analytics Suite**.
-This project combines advanced data science, machine learning, causal inference, CLTV modelling, neural embeddings, and real-time MLOps engineering.
+Thank you for your interest in contributing to the **Customer Segmentation & Intelligence Platform**.
 
-The goal of this document is to create a consistent, safe, and collaborative environment for contributors of all skill levels.
+This project brings together **advanced data science, machine learning, causal inference, customer lifetime value (CLTV) modelling, neural embeddings, explainable AI, and real-time MLOps engineering**.
 
-Please read this guide before opening a Pull Request.
+Our goal is to maintain a **high-quality, ethical, and collaborative environment** where contributors of all experience levels can meaningfully participate.
+
+Please read this guide carefully **before opening an issue or pull request**.
 
 ---
 
-# Project Overview
+## 📁 Project Overview
 
 ```
 Customer_Segmentation_RFM/
 │
-├── app.py                       # Streamlit interface
+├── app.py                       # Streamlit dashboard
 ├── fastapi_scorer.py            # Real-time inference service
 ├── requirements.txt
 ├── README.md
 ├── .gitignore
 │
 ├── utils/
-│   ├── cltv_models.py           # BG/NBD + Gamma-Gamma modelling
-│   ├── uplift.py                # Uplift modelling + Causal inference
-│   ├── embeddings.py            # Customer2Vec embeddings + FAISS search
-│   ├── shap_utils.py            # SHAP explainability + decision plots
-│   └── preprocessing.py         # Cleaning + transformations
+│   ├── cltv_models.py           # BG/NBD + Gamma-Gamma models
+│   ├── uplift.py                # Uplift & causal inference
+│   ├── embeddings.py            # Customer2Vec + FAISS
+│   ├── shap_utils.py            # SHAP explainability
+│   └── preprocessing.py         # Data cleaning & transforms
 │
-├── models/                      # Serialized models, avoid committing binaries
-├── data/                        # Sample datasets only
-└── docs/                        # Architecture diagrams, model cards
+├── models/                      # Serialized models (avoid large binaries)
+├── data/                        # Sample or synthetic datasets only
+└── docs/                        # Architecture diagrams & model cards
 ```
 
 ---
 
-# Prerequisites
+## ✅ Prerequisites
 
 Before contributing, ensure you have:
 
-### ✔ Python 3.10
+### Required
 
-(Other versions are unsupported due to ML dependencies.)
+* **Python 3.10**
 
-### ✔ Recommended setup
+  > Other versions are unsupported due to ML dependency constraints.
+
+### Recommended Environment Setup
 
 ```bash
 python -m venv rfm_env
-.\rfm_env\Scripts\activate
+source rfm_env/bin/activate      # macOS / Linux
+rfm_env\Scripts\activate         # Windows
 pip install -r requirements.txt
 ```
 
-### ✔ Additional optional packages for modelling:
+### Optional (Advanced Modelling)
 
-* PyTorch (for embeddings)
-* faiss-cpu (for similarity search)
-* alibi (counterfactuals)
+Depending on your contribution, you may also need:
+
+* PyTorch (embeddings)
+* faiss-cpu (similarity search)
 * shap
-* econml / causalml (if supported by your OS/Python version)
+* alibi (counterfactuals)
+* econml or causalml (OS/Python dependent)
 
 ---
 
-# How to Contribute
+## 🔁 How to Contribute
 
-Follow this workflow for all contributions:
+All contributions must follow this workflow:
 
----
+### 1. Fork the Repository
 
-## Fork the repository
+Click **Fork** on GitHub.
 
-Click “Fork” on GitHub.
+### 2. Create a Feature Branch
 
----
+Use the following naming convention:
 
-## Create a feature branch
-
-Use the following naming scheme:
-
-```
+```bash
 git checkout -b feature/<area>-<short-description>
 ```
 
-Examples:
+**Examples**
 
-```
-feature/shap-improvements
-feature/probabilistic-cltv
-feature/customer2vec-embedding
-```
+* `feature/shap-improvements`
+* `feature/probabilistic-cltv`
+* `feature/customer2vec-embeddings`
 
 ---
 
-## Make your changes
+### 3. Make Your Changes
 
-Keep code modular and documented.
-Follow the guidelines in the next sections.
+* Keep code **modular**, **readable**, and **documented**
+* Follow the coding standards below
 
 ---
 
-## Format, lint, and type-check code
+### 4. Format, Lint, and Type-Check
 
-Before committing:
+Before committing, run:
 
 ```bash
 black .
@@ -114,9 +116,9 @@ mypy .
 
 ---
 
-## Commit using *conventional commits*
+### 5. Commit Using Conventional Commits
 
-Examples:
+**Examples**
 
 ```
 feat: add SHAP decision plot for churn model
@@ -127,188 +129,161 @@ docs: update architecture diagram
 
 ---
 
-## Push and open a Pull Request
+### 6. Push and Open a Pull Request
 
-```
+```bash
 git push origin feature/<your-branch>
 ```
 
-In your PR, include:
+Your PR should include:
 
-* What you changed
-* Why the change matters
-* Screenshots (for Streamlit UI changes)
-* Performance benchmarks if modifying models
-* Any risks or assumptions
+* ✔ What you changed
+* ✔ Why the change matters
+* ✔ Screenshots (for Streamlit UI changes)
+* ✔ Benchmarks (for ML changes)
+* ✔ Risks, assumptions, or limitations
 
-A reviewer will engage with you shortly.
-
----
-
-# Coding Guidelines
-
-High-quality code is important for this project.
-Please follow these principles:
+A maintainer will review your PR as soon as possible.
 
 ---
 
-## Python Style
+## 🧑‍💻 Coding Guidelines
 
-* Follow **PEP8**
-* Use **type hints** everywhere
+### Python Standards
+
+* Follow **PEP 8**
+* Use **type hints everywhere**
 * Add **docstrings** to public functions
-* Keep functions small, modular, and testable
-* Avoid deeply nested logic if possible
+* Keep functions **small, testable, and modular**
+* Avoid deeply nested logic
 
 ---
 
-## Machine Learning Style
+### 🤖 Machine Learning Standards
 
 When modifying ML components:
 
-### Always set random_state=42
+* Always set:
 
-Ensures reproducibility.
+  ```python
+  random_state = 42
+  ```
+* Clearly document:
 
-### Include a description of the model
+  * Model assumptions
+  * Hyperparameters
+  * Training logic
+* Use `joblib.dump()` for model persistence
+* Avoid pickling with mismatched library versions
 
-Document hyperparameters in comments.
-
-### Do not pickle with mismatched sklearn versions
-
-Prefer `joblib.dump` + lock version in `requirements.txt`.
-
-### Include model validation
-
-If retraining, provide:
+If retraining models, include:
 
 * ROC / PR curves
-* SHAP feature importances
-* Drift checks if applicable
+* SHAP feature importance
+* Drift checks where applicable
 
 ---
 
-## Streamlit UI Guidelines
+### 🖥 Streamlit UI Guidelines
 
-* Keep complex computation outside the UI (use caching)
-* Use:
+* Keep heavy computation **outside UI logic**
+* Use caching appropriately:
 
-```
-st.cache_resource  # for models
-st.cache_data      # for processed datasets
-```
-
-* Avoid blocking operations (e.g., training models inside UI)
-* Prefer Plotly over Matplotlib for interactive plots
-
----
-
-## FastAPI Guidelines
-
-* Use Pydantic for request/response schemas
-* Ensure API responses are JSON-serialisable
-* Avoid heavy ML in the request loop
-  → Load models once using global cache
+  ```python
+  st.cache_resource  # models
+  st.cache_data      # processed datasets
+  ```
+* Avoid blocking operations (e.g. training models in UI)
+* Prefer **Plotly** over Matplotlib for interactive visuals
 
 ---
 
-# Testing Guidelines
+### ⚡ FastAPI Guidelines
 
-Even if tests are limited, use `pytest`.
+* Use **Pydantic** schemas for requests/responses
+* Ensure responses are **JSON-serialisable**
+* Load ML models **once** using global cache
+* Avoid heavy computation inside request handlers
 
-Recommended tests:
+---
 
-### Preprocessing
+## 🧪 Testing Guidelines
 
-Missing columns, incorrect dtypes, negative prices.
+Even minimal testing is encouraged. Use **pytest**.
 
-### CLTV modelling
+### Recommended Tests
 
-* BG/NBD fit should not crash
-* Gamma-Gamma model should converge or trigger fallback
+**Preprocessing**
 
-### Causal uplift modelling
+* Missing columns
+* Incorrect dtypes
+* Invalid or negative values
 
-Ensure T-learner or causal forest produces numeric outputs.
+**CLTV Models**
 
-### Embeddings
+* BG/NBD fit stability
+* Gamma-Gamma convergence or fallback
 
-FAISS index should return neighbours.
+**Uplift Models**
 
-### FastAPI endpoints
+* Numeric outputs from T-learner / causal forest
 
-Test with `httpx`:
+**Embeddings**
+
+* FAISS index returns valid neighbours
+
+**FastAPI**
 
 ```python
 client = TestClient(app)
 response = client.post("/predict", json=payload)
 ```
 
-### Streamlit functions
+**Streamlit**
 
-Use unit tests for utility functions only.
-
----
-
-# Branching Model
-
-We follow a simple, stable branching model:
-
-### `main`
-
-Production-ready code, versioned releases.
-
-### `dev`
-
-Integration branch for next release.
-
-### `feature/*`
-
-Individual feature branches.
-
-**No one commits directly to `main`.**
-All changes go through Pull Requests.
+* Unit test utility functions only
 
 ---
 
-# Pull Request Requirements
+## 🌿 Branching Model
+
+We follow a simple and stable branching strategy:
+
+* `main` — production-ready, versioned releases
+* `dev` — integration branch for upcoming release
+* `feature/*` — individual contributions
+
+🚫 Direct commits to `main` are not allowed.
+
+---
+
+## 📋 Pull Request Requirements
 
 Every PR must include:
 
-* Clear explanation of the change
-* Screenshots (if UI elements changed)
-* Benchmark results for ML model updates
-* Risk assessment (e.g., new dependencies)
-* Updates to docs if needed (e.g., new features)
+* Clear description of changes
+* Screenshots (if UI-related)
+* Benchmarks (if ML-related)
+* Risk assessment (new dependencies, breaking changes)
+* Documentation updates where relevant
 
 ---
 
-# Security & Ethical ML Guidelines
+## 🔐 Security & Ethical ML Guidelines
 
-This project involves sensitive customer data modelling.
-To ensure safety:
+This project involves sensitive analytics workflows.
 
-### Do not commit production datasets
-
-Only use anonymised samples.
-
-### Avoid embedding PII in models
-
-Do not store raw identifiers in embeddings.
-
-### Respect model fairness
-
-Check SHAP explanations for unintended bias signals.
-
-### Document known issues
-
-If a model has blind spots, describe them.
+* ❌ Do not commit real or proprietary customer data
+* ✔ Use anonymised or synthetic datasets only
+* Avoid embedding PII in models or embeddings
+* Review SHAP outputs for fairness or bias concerns
+* Document known limitations and ethical considerations
 
 ---
 
-# Model Versioning Policy
+## 🧾 Model Versioning Policy
 
-Models in `/models` should follow:
+Models in `/models` must follow this naming scheme:
 
 ```
 churn_model_v1.pkl
@@ -318,30 +293,32 @@ customer2vec_v1.faiss
 
 For each update:
 
-* Increment version
-* Add a model card to `/docs/model_cards/`
+* Increment the version
+* Add or update a **model card** in `/docs/model_cards/`
 * Update changelog
-* Remove obsolete versions unless needed
+* Remove obsolete models unless required
 
 ---
 
-# Requesting Support
+## 🆘 Requesting Support
 
 If you encounter issues:
 
 1. Search existing GitHub issues
-2. Open a new issue with:
+2. Open a new issue including:
 
    * Full error stack trace
-   * OS / Python version
+   * OS and Python version
    * Steps to reproduce
-   * Screenshots if UI-related
+   * Screenshots (if UI-related)
 
-The maintainers will respond ASAP.
+Maintainers will respond as soon as possible.
 
 ---
 
-# Thank You
+## 🙏 Thank You
 
-Your contributions help improve this enterprise-grade RFM analytics platform.
-We appreciate your time and expertise — let’s build something remarkable together.
+Your contributions help evolve this **enterprise-grade customer intelligence platform**.
+
+We appreciate your time, expertise, and commitment —
+**let’s build something impactful together.** 🚀
