@@ -1,76 +1,40 @@
-# 🧠 Customer Segmentation & Intelligence Platform
+# Customer Segmentation & Intelligence Platform
 
-An **end-to-end customer analytics and intelligence platform** built with Python, combining **RFM segmentation**, **CLTV forecasting**, **churn prediction**, **uplift modeling**, **customer embeddings**, **explainable AI**, and **real-time inference**.
-
-This project goes beyond traditional RFM analysis by delivering a **production-style machine learning system** with dashboards, APIs, and modular pipelines suitable for real-world marketing, retention, and personalization use cases.
+An end-to-end customer analytics platform built in Python. Goes beyond standard RFM analysis by combining probabilistic lifetime value modelling, churn prediction, causal uplift analysis, customer embeddings, and real-time inference, all packaged with an interactive dashboard and a REST API.
 
 ---
 
-## 🚀 What This Project Does
+## What It Does
 
-This platform enables teams to:
-
-* Segment customers based on behavioral patterns
-* Forecast customer lifetime value probabilistically
-* Predict churn risk and explain predictions
-* Measure marketing impact using causal uplift models
-* Identify similar customers using learned embeddings
-* Serve real-time predictions via an API
-* Explore insights interactively through a web UI
+- Segments customers using RFM scoring and K-Means clustering
+- Forecasts customer lifetime value probabilistically using BG/NBD and Gamma-Gamma models
+- Predicts churn risk with SHAP-based feature-level explanations
+- Measures marketing treatment effects using causal uplift modelling
+- Finds similar customers using Customer2Vec-style embeddings and FAISS similarity search
+- Serves real-time predictions through a FastAPI inference service
+- Presents all insights in an interactive Streamlit dashboard
 
 ---
 
-## ✨ Core Features
+## Architecture
 
-### 🔍 Customer Segmentation
-
-* RFM (Recency, Frequency, Monetary) scoring
-* Automated segment labeling
-* Visual diagnostics and summaries
-
-### 📈 Forecasting & Risk
-
-* Probabilistic **CLTV modeling** (BG/NBD + Gamma-Gamma)
-* **Churn prediction** with feature-level explainability (SHAP)
-
-### 🎯 Personalization & Marketing
-
-* **Uplift modeling** to estimate treatment effects
-* Campaign prioritization and targeting logic
-
-### 🧠 Embeddings & Similarity
-
-* **Customer2Vec-style embeddings**
-* Fast similarity search using FAISS
-
-### 🛠 Interfaces & Tooling
-
-* Interactive **Streamlit dashboard**
-* **FastAPI** real-time inference service
-* Event simulation for live scoring pipelines
-* Modular, reusable ML components
-
----
-
-## 🧩 Architecture Overview
-
-This repository is structured like a **production ML system**, not a notebook demo.
+The repository is structured as a modular ML system, not a single notebook.
 
 ```
 Customer_Segmentation_RFM/
-├── app.py                     # Streamlit dashboard
-├── fastapi_scorer.py          # FastAPI inference service
-├── producer_sim.py            # Real-time event simulator
-├── rfm_utils.py               # RFM computation utilities
-├── cltv_models.py             # CLTV models
-├── uplift.py                  # Causal uplift modeling
-├── embeddings.py              # Customer embeddings & FAISS
-├── explainability.py          # SHAP explainability
-├── campaign_planner.py        # Campaign decision logic
-├── models/                    # Saved model artifacts
+├── app.py                  # Streamlit dashboard
+├── fastapi_scorer.py       # FastAPI inference service
+├── producer_sim.py         # Real-time event simulator
+├── rfm_utils.py            # RFM computation
+├── cltv_models.py          # CLTV modelling
+├── uplift.py               # Causal uplift
+├── embeddings.py           # Customer embeddings and FAISS
+├── explainability.py       # SHAP explanations
+├── campaign_planner.py     # Campaign targeting logic
+├── models/                 # Saved model artefacts
 ├── docs/
-│   ├── architecture.md        # System design
-│   └── model_card.md          # Model documentation
+│   ├── architecture.md
+│   └── model_card.md
 ├── requirements.txt
 ├── contributing.md
 └── code_of_conduct.md
@@ -78,120 +42,79 @@ Customer_Segmentation_RFM/
 
 ---
 
-## 📦 Installation
+## Getting Started
 
-### Prerequisites
-
-* Python **3.8+**
-* Virtual environment recommended
-
-### Setup
+**Requirements:** Python 3.8 or above
 
 ```bash
 git clone https://github.com/navvyiin/Customer_Segmentation_RFM.git
 cd Customer_Segmentation_RFM
 python -m venv venv
-source venv/bin/activate      # macOS / Linux
-venv\Scripts\activate         # Windows
+source venv/bin/activate        # macOS / Linux
+venv\Scripts\activate           # Windows
 pip install -r requirements.txt
 ```
 
 ---
 
-## ▶️ Running the Project
+## Running the Project
 
-### 📊 Streamlit Dashboard
+**Dashboard**
 
 ```bash
 streamlit run app.py
 ```
 
-Use the dashboard to:
+Explore RFM segments, CLTV and churn predictions, SHAP plots, and customer similarity from the sidebar.
 
-* Explore RFM segments
-* View CLTV and churn predictions
-* Inspect explainability plots
-* Analyze customer similarity
-
----
-
-### ⚡ Real-Time Inference API
+**Inference API**
 
 ```bash
 uvicorn fastapi_scorer:app --reload --port 8001
 ```
 
-Example endpoints:
+Available endpoints: `POST /predict_churn`, `POST /predict_cltv`, `POST /uplift_score`, `POST /similar_customers`
 
-* `POST /predict_churn`
-* `POST /predict_cltv`
-* `POST /uplift_score`
-* `POST /similar_customers`
-
----
-
-### 🌀 Event Simulation (Optional)
+**Event Simulation (optional)**
 
 ```bash
 python producer_sim.py
 ```
 
-Simulates streaming customer events for real-time scoring pipelines.
+Simulates a stream of customer events for testing real-time scoring pipelines.
 
 ---
 
-## 🧠 Use Cases
+## Tech Stack
 
-This platform is suitable for:
-
-* 📦 Customer segmentation & profiling
-* 📉 Churn prediction and retention strategy
-* 💰 Customer lifetime value forecasting
-* 🎯 Campaign targeting & uplift analysis
-* 🤝 Recommendation and similarity search
-* 🧪 ML system design demonstrations
+`Python` `Pandas` `Scikit-learn` `Lifetimes` `PyTorch` `SHAP` `FAISS` `FastAPI` `Streamlit`
 
 ---
 
-## 🛠 Technologies Used
+## Notes
 
-* **Python**
-* **Pandas / NumPy**
-* **Scikit-learn**
-* **Lifetimes**
-* **SHAP**
-* **FAISS**
-* **FastAPI**
-* **Streamlit**
+- Built for experimentation, research, and ML system design demonstrations
+- Processing speed depends on dataset size and hardware
+- Not designed as a plug-and-play production SaaS product
 
 ---
 
-## ⚠️ Notes & Limitations
+## Roadmap
 
-* Designed for experimentation, prototyping, and learning
-* Performance depends on dataset size and hardware
-* Not intended as a plug-and-play SaaS product
-
----
-
-## 🛣 Roadmap
-
-* Dockerized deployment
-* Model monitoring & drift detection
-* Feature store integration
-* CI/CD and automated testing
-* Cloud-native deployment examples
+- Dockerised deployment
+- Model monitoring and drift detection
+- Feature store integration
+- CI/CD and automated testing
+- Cloud-native deployment examples
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
-Contributions, ideas, and improvements are welcome.
-Please review `contributing.md` before submitting changes.
+Contributions and ideas are welcome. Please read `contributing.md` before submitting a pull request.
 
 ---
 
-## 📄 License
+## License
 
-MIT License
-© 2026 navvyiin
+MIT License. © 2026 navvyiin
