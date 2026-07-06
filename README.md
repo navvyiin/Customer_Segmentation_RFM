@@ -1,120 +1,233 @@
-# Customer Segmentation & Intelligence Platform
+# Customer Intelligence Platform
 
-An end-to-end customer analytics platform built in Python. Goes beyond standard RFM analysis by combining probabilistic lifetime value modelling, churn prediction, causal uplift analysis, customer embeddings, and real-time inference, all packaged with an interactive dashboard and a REST API.
+## Production-Oriented Machine Learning for Customer Analytics, Retention, and Personalisation
 
----
-
-## What It Does
-
-- Segments customers using RFM scoring and K-Means clustering
-- Forecasts customer lifetime value probabilistically using BG/NBD and Gamma-Gamma models
-- Predicts churn risk with SHAP-based feature-level explanations
-- Measures marketing treatment effects using causal uplift modelling
-- Finds similar customers using Customer2Vec-style embeddings and FAISS similarity search
-- Serves real-time predictions through a FastAPI inference service
-- Presents all insights in an interactive Streamlit dashboard
+> A modular customer intelligence platform that integrates customer segmentation, probabilistic lifetime value estimation, churn prediction, causal uplift modelling, representation learning, explainable AI, and real-time inference into a single deployable system.
 
 ---
 
-## Architecture
+## Motivation
 
-The repository is structured as a modular ML system, not a single notebook.
+Customer analytics is often fragmented.
+
+Traditional customer segmentation focuses on descriptive analysis, while predictive modelling, customer lifetime value estimation, recommendation systems, explainability, and campaign optimisation are usually implemented as separate workflows.
+
+This project was developed to demonstrate how modern customer intelligence systems can integrate these capabilities into a unified machine learning architecture suitable for experimentation, deployment, and future production environments.
+
+---
+
+### Customer Behaviour Analysis
+
+* RFM feature engineering
+* Behavioural segmentation
+* K-Means clustering
+
+---
+
+### Customer Lifetime Value
+
+* BG/NBD
+* Gamma-Gamma
+* Probabilistic CLTV estimation
+
+---
+
+### Customer Retention
+
+* Churn prediction
+* Feature importance
+* SHAP explanations
+
+---
+
+### Marketing Optimisation
+
+* Uplift modelling
+* Treatment effect estimation
+* Campaign targeting
+
+---
+
+### Representation Learning
+
+* Customer2Vec embeddings
+* FAISS similarity search
+* Nearest neighbour retrieval
+
+---
+
+### Real-Time ML
+
+* FastAPI inference
+* Live scoring
+* Streaming simulation
+
+---
+
+# Architecture
+
+```text
+Customer Data
+      │
+      ▼
+Feature Engineering
+      │
+      ▼
+────────────────────────────────────────────
+│          Behaviour Modelling             │
+│                                          │
+│  RFM        CLTV        Churn            │
+│  KMeans     BG/NBD      XGBoost          │
+│                                          │
+────────────────────────────────────────────
+      │
+      ▼
+Representation Learning
+(Customer2Vec + FAISS)
+      │
+      ▼
+Campaign Optimisation
+(Causal Uplift)
+      │
+      ▼
+Explainability (SHAP)
+      │
+      ▼
+FastAPI Inference Layer
+      │
+      ▼
+Streamlit Dashboard
+```
+
+---
+
+# Why this project is different
+
+This platform combines descriptive analytics, probabilistic modelling, predictive machine learning, causal inference, representation learning, explainable AI, and deployment into a unified architecture, illustrating how customer intelligence systems are designed in modern production environments.
+
+---
+
+## Engineering Challenges
+
+The most difficult aspect of this project was not implementing individual machine learning models, but designing a modular architecture capable of integrating heterogeneous modelling paradigms.
+
+Each analytical component—including probabilistic CLTV estimation, supervised churn prediction, causal uplift modelling, and embedding-based similarity search—requires different preprocessing assumptions, feature pipelines, and inference workflows.
+
+Developing reusable interfaces while avoiding duplicated logic required careful separation between data engineering, feature engineering, model orchestration, and API layers.
+
+---
+
+# Repository Structure
 
 ```
-Customer_Segmentation_RFM/
-├── app.py                  # Streamlit dashboard
-├── fastapi_scorer.py       # FastAPI inference service
-├── producer_sim.py         # Real-time event simulator
-├── rfm_utils.py            # RFM computation
-├── cltv_models.py          # CLTV modelling
-├── uplift.py               # Causal uplift
-├── embeddings.py           # Customer embeddings and FAISS
-├── explainability.py       # SHAP explanations
-├── campaign_planner.py     # Campaign targeting logic
-├── models/                 # Saved model artefacts
-├── docs/
-│   ├── architecture.md
-│   └── model_card.md
-├── requirements.txt
-├── contributing.md
-└── code_of_conduct.md
+Customer-Intelligence-Platform/
+
+app/
+
+models/
+
+pipelines/
+
+api/
+
+experiments/
+
+docs/
+
+assets/
+
+tests/
+
+docker/
+
+configs/
+
+```
+---
+
+# Machine Learning Pipeline
+
+```
+Raw Customer Data
+       │
+       ▼
+Cleaning
+       │
+       ▼
+Feature Engineering
+       │
+       ▼
+─────────────────────────────
+│ RFM                     │
+│ CLTV                    │
+│ Churn                   │
+│ Embeddings              │
+│ Uplift                  │
+─────────────────────────────
+       │
+       ▼
+Model Registry
+       │
+       ▼
+FastAPI
+       │
+       ▼
+Dashboard
 ```
 
 ---
 
-## Getting Started
+# Design Principles
 
-**Requirements:** Python 3.8 or above
-
-```bash
-git clone https://github.com/navvyiin/Customer_Segmentation_RFM.git
-cd Customer_Segmentation_RFM
-python -m venv venv
-source venv/bin/activate        # macOS / Linux
-venv\Scripts\activate           # Windows
-pip install -r requirements.txt
-```
+* Modular architecture
+* Separation of concerns
+* Reproducibility
+* Explainability
+* Deployment-first design
+* Extensibility
 
 ---
 
-## Running the Project
+# Limitations
 
-**Dashboard**
+Current limitations include
 
-```bash
-streamlit run app.py
-```
+* single-node execution
 
-Explore RFM segments, CLTV and churn predictions, SHAP plots, and customer similarity from the sidebar.
+* no distributed training
 
-**Inference API**
+* no feature store
 
-```bash
-uvicorn fastapi_scorer:app --reload --port 8001
-```
+* no experiment tracking
 
-Available endpoints: `POST /predict_churn`, `POST /predict_cltv`, `POST /uplift_score`, `POST /similar_customers`
+* no automated retraining
 
-**Event Simulation (optional)**
+* no model monitoring
 
-```bash
-python producer_sim.py
-```
-
-Simulates a stream of customer events for testing real-time scoring pipelines.
+* no Kubernetes deployment
 
 ---
 
-## Tech Stack
+# Future Work
 
-`Python` `Pandas` `Scikit-learn` `Lifetimes` `PyTorch` `SHAP` `FAISS` `FastAPI` `Streamlit`
+* MLflow experiment tracking
 
----
+* Kubeflow pipelines
 
-## Notes
+* Feature store integration
 
-- Built for experimentation, research, and ML system design demonstrations
-- Processing speed depends on dataset size and hardware
-- Not designed as a plug-and-play production SaaS product
+* Online learning
 
----
+* Reinforcement learning for campaign optimisation
 
-## Roadmap
+* LLM-powered customer insights
 
-- Dockerised deployment
-- Model monitoring and drift detection
-- Feature store integration
-- CI/CD and automated testing
-- Cloud-native deployment examples
+* Vector databases
 
----
+* Streaming inference using Kafka
 
-## Contributing
+* Distributed deployment with Kubernetes
 
-Contributions and ideas are welcome. Please read `contributing.md` before submitting a pull request.
+* Model monitoring with Evidently AI
 
 ---
-
-## License
-
-MIT License. © 2026 navvyiin
