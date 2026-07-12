@@ -1,318 +1,38 @@
-# Customer Intelligence Platform (CIP)
+# Corporate RFM Analytics Suite
 
-### An End-to-End Machine Learning Platform for Customer Analytics, Lifetime Value Prediction, Churn Intelligence, and Real-Time Decision Support
+An end-to-end customer intelligence platform combining RFM segmentation, probabilistic lifetime value modelling, churn prediction, and uplift analysis.
 
-> **Customer Intelligence Platform (CIP)** is a modular machine learning system that combines customer segmentation, probabilistic lifetime value modelling, churn prediction, causal uplift modelling, representation learning, explainable AI, and real-time inference into a unified architecture for customer intelligence.
+**Live app:** https://customer-segmentation-rfm-usng.streamlit.app/
 
-Unlike traditional customer segmentation projects that focus solely on RFM analysis or classification models, CIP integrates multiple complementary modelling paradigms into a reproducible, production-oriented workflow suitable for experimentation, research, and intelligent decision support.
+## What it does
 
----
+Processes 397,884 transaction records down to 4,338 unique customers (£8.91M total revenue), then:
 
-# Motivation
+- **Segments customers via K-Means clustering** on Recency, Frequency, and Monetary features into four groups: Premium Loyalists (705 customers, £5.75M revenue, 12.4% avg churn), At-Risk/Churn Likely (1,617 customers, £0.57M revenue, 99.6% churn probability), Emerging Customers, and Bargain-Driven Low Value.
+- **Models customer lifetime value probabilistically** using the BG/NBD model (via the `lifetimes` library), producing an average CLTV of £1,704.95 rather than a single deterministic point estimate — this matters because CLTV is inherently a distribution, not a fixed number, and treating it as one hides how uncertain the estimate is for any individual customer.
+- **Predicts churn** with an overall churn probability of 19.8% across the customer base.
+- **Explains predictions** using SHAP values, so segment assignment and churn risk aren't black-box outputs.
+- **Serves inference in real time** through a FastAPI backend, structured into 7 modules (RFM utilities, CLTV modelling, uplift analysis, embeddings, explainability, campaign planning, real-time serving).
 
-Customer analytics is often implemented as a collection of disconnected models.
+## Why BG/NBD instead of a simpler CLTV heuristic
 
-A marketing team may use one model for segmentation, another for churn prediction, and a third for customer lifetime value estimation, with little integration between them.
+A common shortcut is estimating CLTV as `average order value × purchase frequency × customer lifespan`, which assumes every customer's future behaviour matches their historical average — it doesn't account for the fact that a customer who hasn't purchased in six months is probably not still active. BG/NBD models purchase timing and dropout as separate stochastic processes, which is why it can distinguish a customer who's likely churned from one who's just an infrequent purchaser, something a flat average can't do.
 
-This project explores whether these analytical components can be combined into a unified intelligence platform capable of supporting data-driven customer management across the entire customer lifecycle.
+## Tech stack
 
-Rather than optimising a single predictive model, the project focuses on designing a modular software architecture that allows multiple machine learning models to cooperate within a consistent inference pipeline.
+Python, Streamlit, FastAPI, Scikit-learn, `lifetimes`, SHAP, FAISS, PyTorch, Plotly.
 
----
+## Known limitations
 
-# Key Capabilities
+- Segmentation and CLTV modelling were run on a single retail transaction dataset; the segment boundaries and BG/NBD parameters would need re-fitting for a different customer base or industry.
+- Uplift analysis is implemented but wasn't validated against a genuine randomized holdout — the causal claims from it should be treated as exploratory rather than confirmed.
 
-### Customer Segmentation
+## Setup
 
-* Classical RFM analysis
-* Behavioural segmentation
-* K-Means clustering
-* Interactive customer profiling
-
----
-
-### Probabilistic Customer Lifetime Value
-
-Implements
-
-* BG/NBD
-* Gamma-Gamma
-
-to estimate
-
-* purchase frequency
-* expected future transactions
-* monetary value
-* customer lifetime value
-
----
-
-### Churn Intelligence
-
-Predicts customer attrition using supervised machine learning with
-
-* feature engineering
-* probability calibration
-* SHAP explainability
-
-allowing users to understand both **who is likely to churn** and **why**.
-
----
-
-### Causal Uplift Modelling
-
-Rather than predicting customer behaviour alone, the platform estimates
-
-> **Which customers are most likely to respond positively to an intervention.**
-
-This enables targeted marketing campaigns with reduced acquisition costs.
-
----
-
-### Customer Representation Learning
-
-Learns dense behavioural embeddings inspired by Customer2Vec and performs
-
-* similarity search
-* nearest-neighbour retrieval
-
-using FAISS.
-
----
-
-### Explainable AI
-
-Every prediction can be interpreted through
-
-* SHAP values
-* feature importance
-* local explanations
-
-making the platform suitable for transparent decision support.
-
----
-
-### Real-Time Inference
-
-A FastAPI backend exposes prediction services for
-
-* Churn Prediction
-* CLTV
-* Uplift
-* Customer Similarity
-
-allowing integration with external applications.
-
----
-
-# System Architecture
-
-```text
-                 Customer Transactions
-                          │
-                          ▼
-                 Data Preprocessing
-                          │
-          ┌───────────────┼────────────────┐
-          ▼               ▼                ▼
-     RFM Pipeline     Feature Store    Behaviour Vectors
-          │               │                │
-          ▼               ▼                ▼
- Segmentation       Churn Model      Customer2Vec
-          │               │                │
-          ├───────────────┼────────────────┤
-                          ▼
-                 CLTV Estimation
-                          │
-                          ▼
-                Causal Uplift Model
-                          │
-                          ▼
-                 Explainability Layer
-                          │
-                          ▼
-               FastAPI Inference Engine
-                          │
-                          ▼
-                 Streamlit Dashboard
+```bash
+git clone https://github.com/navvyiin/corporate-rfm-analytics-suite.git
+cd corporate-rfm-analytics-suite
+pip install -r requirements.txt
+uvicorn api.main:app --reload &
+streamlit run dashboard/app.py
 ```
-
----
-
-# Machine Learning Pipeline
-
-1. Data ingestion
-2. Data validation
-3. Feature engineering
-4. RFM computation
-5. Behavioural segmentation
-6. Customer embedding generation
-7. Churn prediction
-8. CLTV estimation
-9. Causal uplift modelling
-10. Explainability
-11. Real-time inference
-12. Interactive visualisation
-
----
-
-# Repository Structure
-
-```text
-Customer-Intelligence-Platform/
-
-├── app.py
-├── fastapi_scorer.py
-├── producer_sim.py
-│
-├── src/
-│   ├── segmentation/
-│   ├── churn/
-│   ├── cltv/
-│   ├── uplift/
-│   ├── embeddings/
-│   ├── explainability/
-│   ├── api/
-│   └── utils/
-│
-├── models/
-├── notebooks/
-├── docs/
-│
-├── assets/
-│   ├── architecture.png
-│   ├── workflow.png
-│   ├── dashboard.png
-│   └── demo.gif
-│
-├── tests/
-├── requirements.txt
-└── README.md
-```
-
----
-
-# Technology Stack
-
-| Layer             | Technologies          |
-| ----------------- | --------------------- |
-| Programming       | Python                |
-| ML                | Scikit-learn, PyTorch |
-| Analytics         | Pandas, NumPy         |
-| CLTV              | Lifetimes             |
-| Explainability    | SHAP                  |
-| Similarity Search | FAISS                 |
-| Backend           | FastAPI               |
-| Dashboard         | Streamlit             |
-| Visualisation     | Plotly, Matplotlib    |
-| Deployment        | Render                |
-
----
-
-# Engineering Challenges
-
-Building individual machine learning models is relatively straightforward.
-
-The primary challenge of this project was designing a software architecture capable of integrating heterogeneous modelling paradigms into a reusable inference pipeline.
-
-Each analytical component—customer segmentation, probabilistic lifetime value estimation, churn prediction, causal uplift modelling, and behavioural embeddings—operates under different assumptions and requires distinct preprocessing pipelines.
-
-A modular architecture was therefore developed to minimise code duplication, isolate model-specific logic, and provide consistent interfaces for both interactive exploration and API-based inference.
-
-This project demonstrates that production-oriented machine learning is fundamentally a software engineering problem as much as a modelling problem.
-
----
-
-# Current Limitations
-
-* Batch inference only
-* Single-node execution
-* No distributed training
-* No feature store
-* No experiment tracking
-* No model versioning
-* Limited automated testing
-
----
-
-# Future Directions
-
-* MLflow experiment tracking
-* Feast feature store
-* Kubeflow pipelines
-* Docker containers
-* Kubernetes deployment
-* Kafka streaming
-* Airflow orchestration
-* Real-time monitoring
-* Drift detection
-* Model registry
-* A/B testing framework
-* Vector databases for customer retrieval
-* LLM-powered campaign generation
-
----
-
-# Reproducibility
-
-Every experiment can be reproduced using the provided datasets, configuration files, and documented execution pipeline. Random seeds are fixed where appropriate to improve reproducibility.
-
----
-
-# Documentation
-
-```
-docs/
-
-architecture.md
-
-system_design.md
-
-methodology.md
-
-model_card.md
-
-limitations.md
-
-future_work.md
-
-benchmark.md
-
-api.md
-```
-
----
-
-# Assets
-
-```
-assets/
-
-demo.gif
-
-dashboard.png
-
-architecture.png
-
-workflow.png
-
-model_pipeline.png
-```
-
----
-
-# Citation
-
-```text
-If you use Customer Intelligence Platform in academic work, please cite:
-
-Naval Kishore
-Customer Intelligence Platform: An End-to-End Machine Learning System for Customer Analytics and Decision Support.
-GitHub Repository, 2026.
-```
-
----
-
-# License
-
-MIT License
